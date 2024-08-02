@@ -51,7 +51,7 @@ const SignIn = () => {
           if (res.token && res.userId) {
             localStorage.setItem("token", res.token);
             localStorage.setItem("userId", res.userId);
-            const remainingMilliseconds = 60 * 60 * 1000 * 2;
+            const remainingMilliseconds = 1000 * 60 * 60 * 2;
             const expiryDate = new Date(
               new Date().getTime() + remainingMilliseconds
             );

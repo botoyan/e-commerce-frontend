@@ -1,7 +1,16 @@
 import React, { useEffect } from "react";
+import { useNavigate } from "react-router";
 
 function HomePage() {
-  useEffect(() => {}, []);
+  let navigate = useNavigate();
+  useEffect(() => {
+    if (
+      new Date(localStorage.getItem("expiryDate")).getTime() <
+      new Date().getTime()
+    ) {
+      navigate("/sign-in");
+    }
+  });
   return (
     <div>
       <h2>HomePage</h2>
