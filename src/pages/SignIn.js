@@ -12,7 +12,7 @@ const SignIn = () => {
   let navigate = useNavigate();
   const [password, setPassword] = useState("");
   const [email, setEmail] = useState("");
-  const [iconSize, setIconSize] = useState(22);
+  const [iconSize, setIconSize] = useState(19);
   const [modalShow, setModalShow] = useState(false);
   useEffect(() => {
     if (window.innerWidth > 800) {
@@ -20,7 +20,13 @@ const SignIn = () => {
     } else {
       setIconSize(15);
     }
-  }, []);
+    if (
+      new Date(localStorage.getItem("expiryDate")).getTime() >
+      new Date().getTime()
+    ) {
+      navigate("/");
+    }
+  }, [navigate]);
   const handleClose = () => {
     setModalShow(false);
   };
@@ -29,7 +35,7 @@ const SignIn = () => {
   };
   const login = () => {
     if (REGEX_EMAIL.test(email) && password.length >= 8) {
-      fetch("http://localhost:8080/auth/login", {
+      fetch("http://localhost:8080/auth/sign-in", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -57,6 +63,7 @@ const SignIn = () => {
             );
             localStorage.setItem("expiryDate", expiryDate.toISOString());
             console.log(res);
+            navigate("/");
           }
         })
         .catch((err) => console.log(err));

@@ -55,7 +55,13 @@ const SignUp = () => {
     } else {
       setIconSize(15);
     }
-  }, []);
+    if (
+      new Date(localStorage.getItem("expiryDate")).getTime() >
+      new Date().getTime()
+    ) {
+      navigate("/");
+    }
+  }, [navigate]);
   return (
     <div>
       <div className="form-container">

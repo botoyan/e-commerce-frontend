@@ -9,6 +9,17 @@ function PopUp({ show, handleClose }) {
     /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
   const [variant, setVariant] = useState("primary");
   const [email, setEmail] = useState("");
+  const forgotPassword = () => {
+    fetch("http://localhost:8080/auth/reset-password", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        email: email,
+      }),
+    });
+  };
   return (
     <Modal show={show} onHide={handleClose}>
       <Modal.Header closeButton>
@@ -17,7 +28,7 @@ function PopUp({ show, handleClose }) {
         </Modal.Title>
       </Modal.Header>
       <Modal.Body>
-        <Form>
+        <Form onSubmit={(e) => e.preventDefault()}>
           <Form.Group className="mb-2" controlId="exampleForm.ControlInput1">
             <Form.Label>Email address</Form.Label>
             <Form.Control
@@ -45,6 +56,10 @@ function PopUp({ show, handleClose }) {
         <Button
           variant={variant}
           onClick={() => {
+            if (!REGEX_EMAIL.test(email)) {
+              return alert("Please provide a valid email address!");
+            }
+            forgotPassword();
             setVariant("danger");
             setTimeout(() => {
               setVariant("primary");
